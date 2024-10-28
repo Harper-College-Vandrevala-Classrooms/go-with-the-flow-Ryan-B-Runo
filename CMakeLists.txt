@@ -7,4 +7,5 @@ include_directories(.)
 
 add_executable(go_with_the_flow_Ryan_B_Runo
         HeatFlow.cpp
-        HeatFlow.h)
+        HeatFlow.h
+        main.cpp)

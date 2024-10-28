@@ -12,6 +12,7 @@ private:
     float initialTemp;
     int sections;
     float K;
+    map<int, float> rod;
 public:
     HeatFlow(const map<int, float> &sourcesAndSinks, float initialTemp, int sections, float k);
     void tick();
