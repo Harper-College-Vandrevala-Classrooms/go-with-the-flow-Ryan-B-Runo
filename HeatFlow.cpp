@@ -15,9 +15,20 @@ int maxIndex(map<int, float> m){//returns the maximum integer key in an (int, fl
     return max;
 }
 
+int minIndex(map<int, float> m){//returns the maximum integer key in an (int, float) map
+    int min;
+    min = m.begin()->first;
+    for(const auto &pair : m){
+        if(pair.first < min){
+            min = pair.first;
+        }
+    }
+    return min;
+}
+
 HeatFlow::HeatFlow(const map<int, float> &sourcesAndSinks, float initialTemp, int sections, float K){
-    if(sourcesAndSinks.size() > sections || maxIndex(sourcesAndSinks) > sections){//can't have more heat sources than sections of the rod and the source/sink map cant reference a position outside the length of the rod.
-        throw invalid_argument("The number of heat sources/sinks cannot be greater than the number of sections int the rod.");
+    if(sourcesAndSinks.size() > sections || maxIndex(sourcesAndSinks) > sections || minIndex(sourcesAndSinks) < 0){//can't have more heat sources than sections of the rod and the source/sink map cant reference a position outside the length of the rod.
+        throw invalid_argument("\nThe number of heat sources/sinks cannot be greater than the number of sections int the rod.\nThere cannot be a source/sink outside of the bounds of the rod.\nThere cannot be a source/sink before the zero position.");
     }else{
         this->sourcesAndSinks = sourcesAndSinks;
         this->sections = sections;
@@ -26,8 +37,8 @@ HeatFlow::HeatFlow(const map<int, float> &sourcesAndSinks, float initialTemp, in
         for(int i = 0; i < maxIndex(sourcesAndSinks)+1; i++){//maxIndex is size-1 because of the 0 index
             if(sourcesAndSinks.count(i) != 0){//if the key exists, translate the source/sink to the rod.
                 rod[i] = sourcesAndSinks.at(i);
-            }else{//key does not exist, set to -1 for now##########################################################################################################
-                rod[i] = -1;
+            }else{//key does not exist, set to initial temp
+                rod[i] = initialTemp;
             }
         }
     }
