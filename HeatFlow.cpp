@@ -1,6 +1,7 @@
 #include "HeatFlow.h"
 #include <stdexcept>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -34,7 +35,7 @@ HeatFlow::HeatFlow(const map<int, float> &sourcesAndSinks, float initialTemp, in
         this->sections = sections;
         this->initialTemp = initialTemp;
         this->K = K;
-        for(int i = 0; i < maxIndex(sourcesAndSinks)+1; i++){//maxIndex is size-1 because of the 0 index
+        for(int i = 0; i < sections; i++){
             if(sourcesAndSinks.count(i) != 0){//if the key exists, translate the source/sink to the rod.
                 rod[i] = sourcesAndSinks.at(i);
             }else{//key does not exist, set to initial temp
@@ -44,8 +45,35 @@ HeatFlow::HeatFlow(const map<int, float> &sourcesAndSinks, float initialTemp, in
     }
 }
 
-void HeatFlow::tick() {
+void HeatFlow::tick() {//fix this
+    map<int, float> newRod;
+    vector<int> nonConstantPositions;
+    for(auto const &pair : rod){//find non-constant positions
+        if(sourcesAndSinks.count(pair.first) == 0){//position on rod is not constant
+            nonConstantPositions.push_back(pair.first);
+        }
+    }
+    for(const auto &pair : rod){
+        newRod = rod;
+        if(sourcesAndSinks.count(pair.first) == 0){//if the point on the rod is not a source
+            float past, leftPast, rightPast;
+            if(pair.first == 0){//at start of rod, has no left
+                leftPast = this->initialTemp;
 
+                past = rod.at(pair.first);
+                rightPast = rod.at(pair.first+1);
+            }
+            if(pair.first == rod.size()-1){//at end of rod, has no right
+                rightPast = this->initialTemp;
+
+                past = rod.at(pair.first);
+                leftPast = rod.at(pair.first-1);
+            }
+            newRod[pair.first] = (past +( this->K)*(rightPast - (2 * past) + leftPast));
+        }
+    }
+
+    this->rod = newRod;
 }
 
 string HeatFlow::prettyPrint() {//just prints the rod
