@@ -28,7 +28,7 @@ int minIndex(map<int, float> m){//returns the maximum integer key in an (int, fl
 }
 
 HeatFlow::HeatFlow(const map<int, float> &sourcesAndSinks, float initialTemp, int sections, float K){
-    if(sourcesAndSinks.size() > sections || maxIndex(sourcesAndSinks) > sections || minIndex(sourcesAndSinks) < 0){//can't have more heat sources than sections of the rod and the source/sink map cant reference a position outside the length of the rod.
+    if(sourcesAndSinks.size() > sections || maxIndex(sourcesAndSinks)+1 > sections || minIndex(sourcesAndSinks) < 0){//can't have more heat sources than sections of the rod and the source/sink map cant reference a position outside the length of the rod.
         throw invalid_argument("\nThe number of heat sources/sinks cannot be greater than the number of sections int the rod.\nThere cannot be a source/sink outside of the bounds of the rod.\nThere cannot be a source/sink before the zero position.");
     }else{
         this->sourcesAndSinks = sourcesAndSinks;
@@ -74,9 +74,7 @@ void HeatFlow::tick() {
                 past = rod.at(pair.first);
                 leftPast = rod.at(pair.first-1);
             }
-            //cout << (past +( this->K)*(rightPast - (2 * past) + leftPast)) << endl;
             newRod[pair.first] = (past +( this->K)*(rightPast - (2 * past) + leftPast));
-            cout << newRod[pair.first] << endl;
         }
     }
     this->rod = newRod;
