@@ -47,12 +47,6 @@ HeatFlow::HeatFlow(const map<int, float> &sourcesAndSinks, float initialTemp, in
 
 void HeatFlow::tick() {
     map<int, float> newRod;
-    vector<int> nonConstantPositions;
-    for(auto const &pair : rod){//find non-constant positions
-        if(sourcesAndSinks.count(pair.first) == 0){//position on rod is not constant
-            nonConstantPositions.push_back(pair.first);
-        }
-    }
     newRod = rod;
     for(const auto &pair : rod){
         if(sourcesAndSinks.count(pair.first) == 0){//if the point on the rod is not a source
