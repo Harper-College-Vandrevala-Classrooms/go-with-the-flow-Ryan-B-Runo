@@ -17,7 +17,7 @@ int main(){
 // +------+------+------+------+------+
 
     h.tick();
-    cout << h.prettyPrint() << endl;
+    //cout << h.prettyPrint() << endl;
 
 // Prints out:
 // +------+------+------+------+------+
@@ -25,7 +25,7 @@ int main(){
 // +------+------+------+------+------+
 
     h.tick();
-    //cout << h.prettyPrint() << endl;
+    cout << h.prettyPrint() << endl;
 
 // Prints out:
 // +------+--------+--------+------+------+

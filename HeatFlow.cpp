@@ -45,7 +45,7 @@ HeatFlow::HeatFlow(const map<int, float> &sourcesAndSinks, float initialTemp, in
     }
 }
 
-void HeatFlow::tick() {//fix this
+void HeatFlow::tick() {
     map<int, float> newRod;
     vector<int> nonConstantPositions;
     for(auto const &pair : rod){//find non-constant positions
@@ -53,10 +53,15 @@ void HeatFlow::tick() {//fix this
             nonConstantPositions.push_back(pair.first);
         }
     }
+    newRod = rod;
     for(const auto &pair : rod){
-        newRod = rod;
         if(sourcesAndSinks.count(pair.first) == 0){//if the point on the rod is not a source
             float past, leftPast, rightPast;
+            if(pair.first != 0 && pair.first != rod.size()-1){//not at either end of rod
+                past = rod.at(pair.first);
+                leftPast = rod.at(pair.first-1);
+                rightPast = rod.at(pair.first+1);
+            }
             if(pair.first == 0){//at start of rod, has no left
                 leftPast = this->initialTemp;
 
@@ -69,10 +74,11 @@ void HeatFlow::tick() {//fix this
                 past = rod.at(pair.first);
                 leftPast = rod.at(pair.first-1);
             }
+            //cout << (past +( this->K)*(rightPast - (2 * past) + leftPast)) << endl;
             newRod[pair.first] = (past +( this->K)*(rightPast - (2 * past) + leftPast));
+            cout << newRod[pair.first] << endl;
         }
     }
-
     this->rod = newRod;
 }
 
