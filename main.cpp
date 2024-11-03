@@ -3,14 +3,14 @@
 
 int main(){
     map<int, float> sources_and_sinks;
-    sources_and_sinks[2] = 100.0;
+    sources_and_sinks[0] = 100.0;
     //sources_and_sinks[4] = 100.0;
     float initial_temperature = 10;
     int number_of_sections = 5;
     float K = 0.1;
 
     HeatFlow h(sources_and_sinks, initial_temperature, number_of_sections, K);
-    //cout << h.prettyPrint() << endl;
+    cout << h.prettyPrint() << endl;
 
 // Prints out:
 // +------+------+------+------+------+
@@ -18,7 +18,7 @@ int main(){
 // +------+------+------+------+------+
 
     h.tick();
-    //cout << h.prettyPrint() << endl;
+    cout << h.prettyPrint() << endl;
 
 // Prints out:
 // +------+------+------+------+------+
